@@ -1,20 +1,14 @@
 {
   "name": "Sorteio Estilo Instagram",
   "short_name": "Sorteio",
-  "start_url": "/index.html",
+  "start_url": "https://meucode-git.github.io/Sorteio-/index.html",
   "display": "standalone",
-  "background_color": "#f09433",
-  "theme_color": "#f09433",
-  "description": "Um aplicativo para sorteios estilo Instagram.",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "icon-192x192.png",
+      "src": "logo-instagram.png",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512x512.png",
-      "sizes": "512x512",
       "type": "image/png"
     }
   ]
