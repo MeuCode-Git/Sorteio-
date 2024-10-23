@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="manifest" href="manifest.json">
+    <title>Sorteio Estilo Instagram</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background: linear-gradient(to right, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #333;
+            font-size: 1em;
+            resize: none;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        textarea:focus {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-color: #ffadc5;
+        }
+
+        button {
+            background: linear-gradient(to right, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #bc1888, #cc2366, #dc2743, #e6683c, #f09433);
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 24px;
+            color: #ffe5f0;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .animacao {
+            animation: rodarNomes 0.1s infinite, escalar 0.1s infinite;
+        }
+
+        @keyframes rodarNomes {
+            0% { color: #ffe5f0; }
+            50% { color: #ffadc5; }
+            100% { color: #ffe5f0; }
+        }
+
+        @keyframes escalar {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .vencedor {
+            text-shadow: 0 0 20px #ffadc5, 0 0 30px #ffadc5, 0 0 40px #ffadc5;
+        }
+    </style>
+</head>
+<body>
+  
+    <img src="logo-instagram.png" alt="Instagram Logo" style="width: 100px; margin-bottom: 20px;">
+    
+    <h1>Sorteio</h1>
+    <form id="formulario">
+        <label for="nomes" style="font-size: 1.1em;">Digite os nomes separados por vírgula:</label><br><br>
+        <textarea id="nomes" rows="4" cols="50" placeholder="Ex.: Maria, João, Pedro..."></textarea><br><br>
+        <button type="button" onclick="sortear()">Sortear</button>
+    </form>
+
+    <p id="resultado"></p>
+    
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+        .then(function() {
+            console.log("Service Worker registrado com sucesso.");
+        })
+        .catch(function(error) {
+            console.log("Falha no registro do Service Worker:", error);
+        });
+    }
+
+    function sortear() {
+        var nomesTexto = document.getElementById('nomes').value;
+        var nomes = nomesTexto.split(',').map(function(nome) {
+            return nome.trim();
+        });
+
+        if (nomes.length === 0 || nomes[0] === "") {
+            document.getElementById('resultado').innerHTML = "Por favor, insira os nomes.";
+            return;
+        }
+
+        var resultadoElemento = document.getElementById('resultado');
+        resultadoElemento.classList.add('animacao');
+
+        var intervalo = setInterval(function() {
+            var indiceAleatorio = Math.floor(Math.random() * nomes.length);
+            resultadoElemento.innerHTML = "Sorteando... " + nomes[indiceAleatorio];
+        }, 100);
+
+        setTimeout(function() {
+            clearInterval(intervalo);
+            var indiceSorteado = Math.floor(Math.random() * nomes.length);
+            resultadoElemento.innerHTML = "O vencedor é: " + nomes[indiceSorteado] + "!";
+            resultadoElemento.classList.remove('animacao');
+            resultadoElemento.classList.add('vencedor');
+            playSound(); // Chama a função para tocar o som
+        }, 3000); // A animação dura 3 segundos
+    }
+
+    function playSound() {
+        var audio = new Audio('sound.mp3'); // Substitua pelo caminho do seu arquivo de som
+        audio.play();
+    }
+    </script>
+</body>
+</html>
